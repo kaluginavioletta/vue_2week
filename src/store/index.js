@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import { loginRequest } from "@/utils/api.js";
+import axios from "axios";
 
 export default createStore({
   state: {

@@ -1,10 +1,36 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
+    <router-link to="/cart">Cart</router-link>
+    <router-link to="/orders">My orders</router-link>
+    <router-link to="/register">Registration</router-link>
     <router-link to="/login">Login</router-link>
+    <p v-show="isLoggedIn"><router-link to="/">Logout</router-link></p>
   </nav>
-  <router-view/>
+  <router-view :cart="cart" @update:cart="cart = $event" />
+  <router-view v-slot="{ ShoppingCart }">
+    <component :is="ShoppingCart" v-if="ShoppingCart" />
+  </router-view>
 </template>
+
+<script>
+  export default {
+    computed:{
+    isLoggedIn() {
+      console.log("isLoggedIn вызывается");
+      return this.$store.state.user_token !== null;
+    },
+    store(){
+      return store
+    }
+  },
+  methods: {
+    logout() {
+      store.commit("logout");
+    },
+  },
+}
+</script>
 
 <style>
 #app {
