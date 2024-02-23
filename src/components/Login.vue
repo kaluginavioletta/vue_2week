@@ -12,6 +12,7 @@
     </div>
     <button type="submit" class="btn">Login</button>
   </form>
+  <router-link to="/">Home</router-link>
 </template>
 
 <script>

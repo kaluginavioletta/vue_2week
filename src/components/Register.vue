@@ -32,6 +32,7 @@ export default {
      </div>
    </form>
  </div>
+ <router-link to="/">Home</router-link>
 </template>
 
 <style scoped>
@@ -44,7 +45,6 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   background-color: #ddc6ff;
 }
-
 .form-group {
   margin-bottom: 15px;
 }
