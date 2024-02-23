@@ -1,9 +1,14 @@
 <script>
 export default {
   name: "Orders",
-  components: {
-
-  }
+  computed: {
+    store() {
+      return store
+    }
+  },
+  created() {
+    this.$store.dispatch('loadOrders');
+  },
 }
 </script>
 
