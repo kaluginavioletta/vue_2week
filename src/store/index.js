@@ -4,33 +4,32 @@ import axios from "axios";
 export default createStore({
   state: {
     products: [],
-    snp: '',
+    fio: '',
     email: '',
     password: '',
     user_token: null,
-    user_auth: false,
-    token: localStorage.getItem('myAppToken') || '',
+    user_auth: false
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
   }, 
-  actions: {
-    AUTH_REQUEST: ({ commit }, user) => {
-      return new Promise((resolve, reject) => {
-        loginRequest(user)
-          .then((token) => {
-            commit('AUTH_SUCCESS', token);
-            localStorage.setItem('myAppToken', token);
-            resolve();
-          })
-          .catch(() => {
-            commit('AUTH_ERROR');
-            localStorage.removeItem('myAppToken');
-            reject();
-          }) 
-      })
-    }
-  },
+  // actions: {
+  //   AUTH_REQUEST: ({ commit }, user) => {
+  //     return new Promise((resolve, reject) => {
+  //       loginRequest(user)
+  //         .then((token) => {
+  //           commit('AUTH_SUCCESS', token);
+  //           localStorage.setItem('myAppToken', token);
+  //           resolve();
+  //         })
+  //         .catch(() => {
+  //           commit('AUTH_ERROR');
+  //           localStorage.removeItem('myAppToken');
+  //           reject();
+  //         }) 
+  //     })
+  //   }
+  // },
   mutations: {
     async getProducts(state){
       const {data} = await axios.get('https://jurapro.bhuser.ru/api-shop/products')
