@@ -1,41 +1,72 @@
-<template>
-    <div>
-      <h1>Регистрация</h1>
-      <form @submit.prevent="register">
-        <input v-model="name" type="text" placeholder="Имя" />
-        <input v-model="email" type="email" placeholder="Email" />
-        <input v-model="password" type="password" placeholder="Пароль" />
-        <button type="submit">Зарегистрироваться</button>
-      </form>
-      <div v-if="error" class="error">{{ error }}</div>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        name: '',
-        email: '',
-        password: '',
-        error: '',
-      };
-    },
-    methods: {
-      async register() {
-        try {
-          await this.$store.dispatch('register', { name: this.name, email: this.email, password: this.password });
-          this.$router.push('/login');
-        } catch (error) {
-          this.error = error.message;
-        }
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
-  .error {
-    color: red;
+<script>
+import store from "@/store";
+export default {
+  computed:{
+    store(){
+      return store
+    }
   }
-  </style>
+}
+</script>
+
+<template>
+<h1>Registration</h1>
+ <div class="register">
+   <form @submit.prevent="store.commit('registration')">
+     <div class="form-group">
+       <label for="name">Name</label>
+       <input id="name" type="text" v-model="store.state.fio" required autofocus class="form-control">
+     </div>
+
+     <div class="form-group">
+       <label for="email">E-Mail Address</label>
+       <input id="email" type="email" v-model="store.state.email" required class="form-control">
+     </div>
+
+     <div class="form-group">
+       <label for="password">Password</label>
+       <input id="password" type="password" v-model="store.state.password" required class="form-control">
+     </div>
+     <div>
+       <button type="submit" class="btn">Зарегистрироваться</button>
+     </div>
+   </form>
+ </div>
+</template>
+
+<style scoped>
+.register {
+  max-width: 400px;
+  margin: 3% auto;
+  padding: 20px;
+  border: 1px solid #6e57e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #ddc6ff;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #5941d4;
+  border-radius: 5px;
+}
+
+.btn {
+  width: 100%;
+  padding: 5px;
+  background-color: #5941d4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #30229b;
+}
+</style>

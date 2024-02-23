@@ -16,7 +16,7 @@ export default {
 </script>
 
 <template>
-  <h1>Каталог товаров</h1>
+  <h1>Catalog</h1>
   <div id="catalog">
     <div class="products">
       <div class="product_item" v-for="item in this.store.state.products">
@@ -42,7 +42,7 @@ export default {
 }
 .product_item{
   width: 220px;
-  background-color: #e1e1e1;
+  background-color: #ddc6ff;
   border-radius: 5px;
   padding: 20px;
   text-align: center;
@@ -61,7 +61,7 @@ export default {
 }
 .add_btn{
   width: 200px;
-  background-color: #4CAF50;
+  background-color: #5941d4;
   color: white;
   border: none;
   border-radius: 5px;
@@ -69,6 +69,6 @@ export default {
   cursor: pointer;
 }
 .product_item button:hover{
-  background-color: #3e8e41;
+  background-color: #30229b;
 }
 </style>
