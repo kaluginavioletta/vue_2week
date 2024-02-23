@@ -38,6 +38,71 @@ export default createStore({
           .catch(error =>{console.log(error)})
       state.products = data;
     },
+    async login(state){
+      let userInfo = {
+        email: state.email,
+        password: state.password
+      }
+      const data = await axios.post('https://jurapro.bhuser.ru/api-shop/login', userInfo)
+      .then(function(response){
+        state.user_token = response.data.data.user_token;
+        localStorage.token = state.user_token;
+      })
+      .catch(error =>{console.log(error)})
+
+      console.log(data);
+      console.log(state.user_token);
+
+      if(localStorage.token !== undefined && localStorage.token !== null){
+        window.location.href = "/";
+      }
+    },
+    async registration(state){
+      let userInfo = {
+        fio: state.fio,
+        email: state.email,
+        password: state.password
+      }
+      const data = await axios.post('https://jurapro.bhuser.ru/api-shop/signup', userInfo)
+      .then(function(response){
+        console.log(response);
+        state.user_token = response.data.data.user_token;
+        localStorage.token = state.user_token;
+      })
+      .catch(error =>{console.log(error)})
+
+      console.log(data);
+      console.log(state.user_token);
+
+      if(localStorage.token !== undefined && localStorage.token !== null){
+        window.location.href = "/login";
+      }
+    },
+    async registration(state){
+      let userInfo = {
+        fio: state.fio,
+        email: state.email,
+        password: state.password
+      }
+      const data = await axios.post('https://jurapro.bhuser.ru/api-shop/signup', userInfo)
+      .then(function(response){
+        console.log(response);
+        state.user_token = response.data.data.user_token;
+        localStorage.token = state.user_token;
+      })
+      .catch(error =>{console.log(error)})
+
+      console.log(data);
+      console.log(state.user_token);
+
+      if(localStorage.token !== undefined && localStorage.token !== null){
+        window.location.href = "/login";
+      }
+    },
+    logout(state){
+      state.user_token = null;
+      localStorage.clear();
+    },
     AUTH_SUCCESS: (state, token) => {
       state.token = token;
     },
