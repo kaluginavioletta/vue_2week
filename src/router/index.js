@@ -30,5 +30,29 @@ const routes = [
       return import('../components/Login.vue');
     },
     beforeEnter: ifNotAuthenticated,
-  }
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: function () {
+      return import('../components/Cart.vue');
+    },
+    beforeEnter: ifNotAuthenticated,
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: function () {
+      return import('../components/Orders.vue');
+    },
+    beforeEnter: ifNotAuthenticated,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: function () {
+      return import('../components/Register.vue');
+    },
+    beforeEnter: ifNotAuthenticated,
+  },
 ]
