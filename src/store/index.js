@@ -3,6 +3,12 @@ import { loginRequest } from "@/utils/api.js";
 
 export default createStore({
   state: {
+    products: [],
+    snp: '',
+    email: '',
+    password: '',
+    user_token: null,
+    user_auth: false,
     token: localStorage.getItem('myAppToken') || '',
   },
   getters: {
@@ -26,6 +32,12 @@ export default createStore({
     }
   },
   mutations: {
+    async getProducts(state){
+      const {data} = await axios.get('https://jurapro.bhuser.ru/api-shop/products')
+          .then(response => state.products = response.data)
+          .catch(error =>{console.log(error)})
+      state.products = data;
+    },
     AUTH_SUCCESS: (state, token) => {
       state.token = token;
     },
