@@ -16,26 +16,14 @@
 </template>
 
 <script>
+import store from "@/store";
 export default {
-  data() { 
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    login() {
-      const userData = {
-        username: this.username,
-        password: this.password,
-      };
-
-      this.$store
-        .dispatch(AUTH_REQUEST, userData)
-        .then(() => this.$router.push("/"));
-    },
-  },
-};
+  computed:{
+    store(){
+      return store
+    }
+  }
+}
 </script>
 
 <style scoped>

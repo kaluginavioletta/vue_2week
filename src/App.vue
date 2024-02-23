@@ -2,8 +2,8 @@
   <div class="home">
     <nav>
     <router-link to="/">Catalog</router-link>
-    <router-link to="/cart">Cart</router-link>
-    <router-link to="/orders">My orders</router-link>
+    <router-link to="/cart" v-show="store.state.user_token !== null">Cart</router-link>
+    <router-link to="/orders" v-show="store.state.user_token !== null">My orders</router-link>
     <router-link to="/register">Register</router-link>
     <router-link to="/login">Login</router-link>
     <p v-show="isLoggedIn"><router-link to="/">Logout</router-link></p>

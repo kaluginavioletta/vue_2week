@@ -1,14 +1,3 @@
-<script>
-import store from "@/store";
-export default {
-  computed:{
-    store(){
-      return store
-    }
-  }
-}
-</script>
-
 <template>
 <h1>Registration</h1>
  <div class="register">
@@ -34,6 +23,17 @@ export default {
  </div>
  <router-link to="/">Home</router-link>
 </template>
+
+<script>
+import store from "@/store";
+export default {
+  computed:{
+    store(){
+      return store
+    }
+  }
+}
+</script>
 
 <style scoped>
 .register {
