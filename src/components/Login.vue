@@ -1,30 +1,54 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/login">Login</router-link>
-  </nav>
-  <router-view/>
+  <form class="login" @submit.prevent="login">
+    <h1>Sign in</h1>
+    <label>User name</label>
+    <input type="text" required v-model="username">
+    <label>Password</label>
+    <input type="password" required v-model="password">
+    <hr>
+    <button type="submit">Login</button>
+  </form>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+export default {
+  data() { 
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    login() {
+      const userData = {
+        username: this.username,
+        password: this.password,
+      };
+
+      this.$store
+        .dispatch(AUTH_REQUEST, userData)
+        .then(() => this.$router.push("/"));
+    },
+  },
+};
+</script>
+
+<style scoped>
+  
+.login {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 10px;
+  margin: 0 auto;
+}
+.login input,
+button {
+  border: 1px solid black;
+  border-radius: 5px;
+}
+hr {
+  margin: 10px 0;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

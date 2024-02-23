@@ -1,58 +1,37 @@
-const ifNotAuthenticated = (to, from, next) => {
-  if (!store.getters.isAuthenticated) {
-    next();
-    return;
-  }
-  next('/');
-};
+import { createRouter, createWebHistory } from 'vue-router'
+import Login from '../components/Login.vue'
+import Register from '../components/Register.vue'
+import Orders from '../components/Orders.vue'
+import Cart from '../components/Cart.vue'
 
-const ifAuthenticated = (to, from, next) => {
-  if (store.getters.isAuthenticated) {
-    next();
-    return;
-  }
-  next('/login');
-}
+
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: function () {
-      return import('../views/HomeView.vue');
-    },
-    beforeEnter: ifAuthenticated,
-  },
-  {
     path: '/login',
     name: 'login',
-    component: function () {
-      return import('../components/Login.vue');
-    },
-    beforeEnter: ifNotAuthenticated,
-  },
-  {
-    path: '/cart',
-    name: 'cart',
-    component: function () {
-      return import('../components/Cart.vue');
-    },
-    beforeEnter: ifNotAuthenticated,
-  },
-  {
-    path: '/orders',
-    name: 'orders',
-    component: function () {
-      return import('../components/Orders.vue');
-    },
-    beforeEnter: ifNotAuthenticated,
+    component: Login
   },
   {
     path: '/register',
     name: 'register',
-    component: function () {
-      return import('../components/Register.vue');
-    },
-    beforeEnter: ifNotAuthenticated,
+    component: Register
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: Orders
+  },
+  {
+    path: '/',
+    name: 'cart',
+    component: Cart
   },
 ]
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
+
+export default router
