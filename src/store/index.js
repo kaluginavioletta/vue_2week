@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default createStore({
   state: {
-    fio: '',
+    name: '',
     email: '',
     password: '',
     user_token: null,
@@ -22,31 +22,23 @@ export default createStore({
           .catch(error =>{console.log(error)})
       state.products = data;
     },
-    async registration(state) {
+    async register(state){
       const data = await axios.post('https://jurapro.bhuser.ru/api-shop/signup', {
-        fio: state.fio,
+        name: state.name,
         email: state.email,
-        password: state.password,
-        phone: state.phone, // Add the phone number field
+        password: state.password
       })
       .then(function(response){
         state.user_token = response.data.data.user_token;
         localStorage.token = state.user_token;
-        console.log(response.data.data);
         alert('Регистрация прошла успешно');
         if(localStorage.token !== null && localStorage.token !== undefined){
           window.location.href = "/login";
         }
       })
-      .catch(error => {
-        if (error.response && error.response.data && error.response.data.message) {
-          console.log(error.response.data.message);
-          alert(`Регистрация/Авторизация провалена: ${error.response.data.message}`);
-        } else {
-          console.log(error);
-          alert('Регистрация/Авторизация провалена. Попробуйте еще раз');
-        }
-      })
+      // .catch(error =>{console.log(error)
+      //   alert('Регистрация провалена. Попробуйте еще раз');
+      // })
     },
     async login(state){
       const data = await axios.post('https://jurapro.bhuser.ru/api-shop/login', {
@@ -56,12 +48,10 @@ export default createStore({
           .then(function(response){
             state.user_token = response.data.data.user_token;
             localStorage.token = state.user_token;
-            console.log(response.data.data);
-            alert('Авторизация прошла успешно');
           })
-          .catch(error =>{console.log(error)
-            alert('Авторизация провалена. Попробуйте еще раз');
-          })
+          // .catch(error =>{console.log(error)
+          //   alert('Авторизация провалена. Попробуйте еще раз');
+          // })
       if(localStorage.token !== undefined && localStorage.token !== null){
         window.location.href = "/";
       }
@@ -75,8 +65,6 @@ export default createStore({
       })
           .then(response => {
             if (response.status === 200 && response.data.data.message === 'logout') {
-              console.log(response.data);
-              // localStorage.removeItem('user_token');
             }
           })
           .catch(error => {console.log(error);
@@ -92,14 +80,11 @@ export default createStore({
           }
         })
             .then(response => {
-              console.log({ data: { message: 'Product add to cart' } });
               response.data.data.quantity = 1;
               state.cartList.push(response.data.data);
             })
             .catch(error => {console.log(error);
             });
-      } else {
-        console.log('Пользователь не авторизован');
       }
     },
     getCart(state) {
@@ -114,15 +99,10 @@ export default createStore({
               if(state.cartList.length === 0){
                 console.log("error", { code: "402", message: "Cart is empty" });
               }
-              else{
-                console.log({ data: response.data.data });
-              }
               state.cartList = response.data.data;
             })
             .catch(error => {console.log(error);
             });
-      } else {
-        console.log('Пользователь не авторизован');
       }
     },
     removeProductFromCart(state, productId) {
@@ -137,71 +117,53 @@ export default createStore({
               const index = state.cartList.findIndex(product => product.id === productId);
               if (index !== -1) {
                 state.cartList.splice(index, 1);
-                console.log({ data: { message: 'Item removed from cart' } });
               }
             })
             .catch(error => {
               if (error.response && error.response.data && error.response.data.error && error.response.data.error.code === 403) {
-                console.log({ error: { code: error.response.data.error.code, message: error.response.data.error.message } });
-              } else {
-                console.log(error);
+                
               }
             });
-      } else {
-        console.log('Пользователь не авторизован');
-      }
-    },
-    updateCartQuantity(state, { productId, newQuantity }) {
-      const productToUpdate = state.cartList.find((product) => product.id === productId);
-      if (productToUpdate) {
-        productToUpdate.quantity = newQuantity;
       }
     },
 
-    async placeOrder(state) {
+    async createOrder(state) {
       const token = state.user_token;
-      if (token && state.cartList.length > 0) {
-        try {
-          const response = await axios.post(
-            'https://jurapro.bhuser.ru/api-shop/order',
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
+      let newOrder = state.cartList.map(item => ({...item}))
+      if (token) {
+        axios.post(`https://jurapro.bhuser.ru/api-shop/order`, newOrder, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(response => {
+            if (response.status === 201) {
+              state.cartList.splice(0, state.cartList.length);
             }
-          );
-          if (response.status === 201) {
-            state.orderList.unshift(response.data.data);
-            localStorage.setItem('userOrders', JSON.stringify(state.orderList));
-            state.cartList = [];
-            // Store the products in the order
-            response.data.data.products = state.cartList.map(item => item.product_id);
-            console.log({ data: { order_id: response.data.data.order_id, message: 'Order is processed' } });
-          }
-        } catch (error) {
-          if (error.response && error.response.status === 422) {
-            console.log('Cart is empty or unable to process the order');
-          } else {
-            console.log(error);
-          }
-        }
-      } else {
-        console.log('Cart is empty');
+          })
+          .catch(error => {
+            if (error.response && error.response.status === 422) {
+              
+            }
+          });
       }
     },
-    setOrders(state, orders) {
-      state.orderList = orders;
+    async getOrders(state){
+      const token = state.user_token;
+      if (token) {
+        const {data} = await axios.get('https://jurapro.bhuser.ru/api-shop/order',{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+        })
+          .then(response => state.orderList = response.data)
+          .catch(error =>{console.log(error)})
+        state.orderList = data;
+      }
     },
   },
   actions: {
-    async loadOrders({ commit }) {
-      const storedOrders = localStorage.getItem('userOrders');
-      if (storedOrders) {
-        commit('setOrders', JSON.parse(storedOrders));
-        console.log("data", JSON.parse(storedOrders));
-      }
-    },
+
   },
   modules: {
 

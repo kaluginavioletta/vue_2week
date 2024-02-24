@@ -1,14 +1,14 @@
 <template>
 <h1>Login</h1>
-  <form class="login" @submit.prevent="login">
+  <form class="login" @submit.prevent="store.commit('login')">
     <div class="form-group">
-      <label>User name</label>
-      <input type="text" required v-model="username">
+      <label>Email</label>
+      <input v-model="store.state.email" type="email" required>
     </div>
 
     <div class="form-group">
       <label>Password</label>
-      <input type="password" required v-model="password">
+      <input v-model="store.state.password" type="password" required>
     </div>
     <button type="submit" class="btn">Login</button>
   </form>

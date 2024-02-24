@@ -1,10 +1,10 @@
 <template>
 <h1>Registration</h1>
  <div class="register">
-   <form @submit.prevent="store.commit('registration')">
+   <form @submit.prevent="store.commit('register')">
      <div class="form-group">
        <label for="name">Name</label>
-       <input id="name" type="text" v-model="store.state.fio" required autofocus class="form-control">
+       <input id="name" type="text" v-model="store.state.name" required autofocus class="form-control">
      </div>
 
      <div class="form-group">
