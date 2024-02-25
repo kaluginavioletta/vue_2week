@@ -33,7 +33,7 @@ export default {
             <div class="prod_item">
               <p class="item">Product id: {{ item }}</p>
               <p class="item">Product Name: {{ this.store.state.products.find(p => p.id === item).name }}</p>
-              <p>Price: {{ order.order_price }} rub.</p>
+              <strong>Price: {{ order.order_price }} rub.</strong>
             </div>
           </p>
       </div>

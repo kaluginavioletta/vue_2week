@@ -27,7 +27,7 @@ export default {
       <div class="product_item" v-for="item in this.store.state.products">
         <h2>{{ item.name }}</h2>
         <p>{{ item.description }}</p>
-        <p>{{ item.price }} rub.</p>
+        <strong>{{ item.price }} rub.</strong>
         <button class="add_btn" @click="addToCart(item)">Add to cart</button>
       </div>
     </div>

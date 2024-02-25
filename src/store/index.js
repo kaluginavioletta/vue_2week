@@ -103,7 +103,7 @@ export default createStore({
             .catch(error => {console.log(error);
             });
       }
-    },
+    },  
     removeProductFromCart(state, productId) {
       const token = state.user_token;
       if (token) {
