@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default createStore({
   state: {
-    name: '',
+    fio: '',
     email: '',
     password: '',
     user_token: null,
@@ -12,8 +12,7 @@ export default createStore({
     orderList: [],
   },
   getters: {
-    isLoggedIn: state => !!state.token,
-    authStatus: state => state.status,
+
   },
   mutations: {
     async getProducts(state){
@@ -24,7 +23,7 @@ export default createStore({
     },
     async register(state){
       const data = await axios.post('https://jurapro.bhuser.ru/api-shop/signup', {
-        name: state.name,
+        fio: state.fio,
         email: state.email,
         password: state.password
       })
@@ -36,9 +35,9 @@ export default createStore({
           window.location.href = "/login";
         }
       })
-      // .catch(error =>{console.log(error)
-      //   alert('Регистрация провалена. Попробуйте еще раз');
-      // })
+      .catch(error =>{console.log(error)
+        alert('Регистрация провалена. Попробуйте еще раз');
+      })
     },
     async login(state){
       const data = await axios.post('https://jurapro.bhuser.ru/api-shop/login', {
@@ -49,9 +48,9 @@ export default createStore({
             state.user_token = response.data.data.user_token;
             localStorage.token = state.user_token;
           })
-          // .catch(error =>{console.log(error)
-          //   alert('Авторизация провалена. Попробуйте еще раз');
-          // })
+          .catch(error =>{console.log(error)
+            alert('Авторизация провалена. Попробуйте еще раз');
+          })
       if(localStorage.token !== undefined && localStorage.token !== null){
         window.location.href = "/";
       }

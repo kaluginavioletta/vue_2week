@@ -1,29 +1,3 @@
-<template>
-<h1>Registration</h1>
- <div class="register">
-   <form @submit.prevent="store.commit('register')">
-     <div class="form-group">
-       <label for="name">Name</label>
-       <input id="name" type="text" v-model="store.state.name" required autofocus class="form-control">
-     </div>
-
-     <div class="form-group">
-       <label for="email">E-Mail Address</label>
-       <input id="email" type="email" v-model="store.state.email" required class="form-control">
-     </div>
-
-     <div class="form-group">
-       <label for="password">Password</label>
-       <input id="password" type="password" v-model="store.state.password" required class="form-control">
-     </div>
-     <div>
-       <button type="submit" class="btn">Зарегистрироваться</button>
-     </div>
-   </form>
- </div>
- <router-link to="/">Home</router-link>
-</template>
-
 <script>
 import store from "@/store";
 export default {
@@ -35,8 +9,34 @@ export default {
 }
 </script>
 
+<template>
+<h1>Registeration</h1>
+ <div class="register-form">
+   <form @submit.prevent="store.commit('register')">
+     <div class="form-group">
+       <label for="name">Fio</label>
+       <input id="name" type="text" v-model="store.state.fio" required class="form-control">
+     </div>
+
+     <div class="form-group">
+       <label for="email">E-mail Address</label>
+       <input id="email" type="email" v-model="store.state.email" required class="form-control">
+     </div>
+
+     <div class="form-group">
+       <label for="password">Password</label>
+       <input id="password" type="password" v-model="store.state.password" required class="form-control">
+     </div>
+     <div>
+       <button type="submit" class="btn btn-primary">Register</button>
+     </div>
+   </form>
+ </div>
+  <router-link to="/">Home</router-link>
+</template>
+
 <style scoped>
-.register {
+.register-form {
   max-width: 400px;
   margin: 3% auto;
   padding: 20px;

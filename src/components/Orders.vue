@@ -1,68 +1,99 @@
 <script>
+import store from "@/store";
+
 export default {
-  name: "Orders",
   computed: {
     store() {
       return store
     }
   },
-  created() {
-    this.$store.dispatch('loadOrders');
+  mounted() {
+    this.$store.commit('getOrders');
   },
   methods: {
-    viewOrderDetails(orderId) {
-      console.log(`Viewing order details for order ID ${orderId}`);
-    },
     getOrderTotalPrice(order) {
       if (!order || !order.products) {
         return 0;
       }
       return order.products.reduce((total, product) => total + product.price * product.quantity, 0);
     },
-    async getProductName(productId) {
-      const token = store.state.user_token;
-      if (token) {
-        try {
-          const response = await axios.get(`https://jurapro.bhuser.ru/api-shop/products/${productId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          return response.data.data.name;
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        console.log('User is not authenticated');
-      }
-    },
   },
 }
 </script>
 
 <template>
-  <h1>My orders:</h1>
+  <h1>My orders</h1>
   <div v-if="store.state.orderList.length > 0">
     <div id="orders">
-      <div class="order_item" v-for="order in store.state.orderList" :key="order.id">
-        <h2>Заказ #{{ order.id }}</h2>
-        <p>Товары:</p>
-        <ul>
-          <li v-for="productId in order.products" :key="productId">
-            {{ getProductName(productId) }}
-          </li>
-        </ul>
-        <p>Итого: {{ getOrderTotalPrice(order) }} руб.</p>
-        <button class="view_btn" @click="viewOrderDetails(order.id)">Подробнее</button>
+      <div class="order" v-for="order in store.state.orderList" :key="order.id">
+        <h2>Order #{{ order.id }}</h2>
+        <p>List of goods in order:</p>
+          <p v-for="item in order.products" :key="item">
+          <h4>Product:</h4>
+            <div class="prod_item">
+              <p class="item">Product id: {{ item }}</p>
+              <p class="item">Product Name: {{ this.store.state.products.find(p => p.id === item).name }}</p>
+              <p>Price: {{ order.order_price }} rub.</p>
+            </div>
+          </p>
       </div>
     </div>
   </div>
   <div v-else>
-    <h3>У вас еще нет заказов</h3>
+    <h3>You don't have any orders yet</h3>
+    <router-link to="/">Home</router-link>
   </div>
-  <router-link to="/">Вернуться на главную</router-link>
 </template>
 
 <style scoped>
+#orders{
+  display: grid;
+  grid-template-columns: repeat(5, 200px);
+  gap: 90px;
+  align-content: center;
+}
 
+.order {
+  width: 220px;
+  background-color: #ddc6ff;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  margin-bottom: 30px;
+}
+
+.order:hover {
+  transform: translateY(-5px);
+}
+
+.prod_item{
+  margin-bottom: 30px;
+}
+
+.order h4 {
+  text-decoration-line: underline;
+}
+
+.order h2 {
+  margin: 0 0 10px;
+}
+
+.order p {
+  margin: 10px;
+}
+
+.view_btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 10px;
+}
+
+.view_btn:hover {
+  color: #f00;
+}
 </style>

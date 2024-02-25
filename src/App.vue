@@ -1,39 +1,18 @@
 <template>
-  <div class="home">
-    <nav>
-    <router-link to="/">Catalog</router-link>
+  <nav>
+    <router-link to="/" v-show="store.state.user_token !== null">Catalog</router-link>
     <router-link to="/cart" v-show="store.state.user_token !== null">Cart</router-link>
     <router-link to="/orders" v-show="store.state.user_token !== null">My orders</router-link>
-    <router-link to="/register">Register</router-link>
-    <router-link to="/login">Login</router-link>
-    <p v-show="isLoggedIn"><router-link to="/">Logout</router-link></p>
+    <router-link to="/" v-show="store.state.user_token !== null" @click="store.commit('logout')">Logout</router-link>
+    <router-link to="/register" v-show="store.state.user_token === null">Register</router-link>
+    <router-link to="/login" v-show="store.state.user_token === null">Login</router-link>
   </nav>
-  <router-view :cart="cart" @update:cart="cart = $event" />
-  <router-view v-slot="{ Cart }">
-    <component :is="Cart" v-if="Cart" />
-  </router-view>
-  </div>
-</template>
 
-<script>
-import store from '@/store';
-  export default {
-    computed:{
-    isLoggedIn() {
-      console.log("isLoggedIn вызывается");
-      return this.$store.state.user_token !== null;
-    },
-    store(){
-      return store
-    }
-  },
-  methods: {
-    logout() {
-      store.commit("logout");
-    },
-  },
-}
-</script>
+  <router-view :cart="cart" @update:cart="cart = $event" />
+  <router-view v-slot="{ ShoppingCart }">
+    <component :is="ShoppingCart" v-if="ShoppingCart" />
+  </router-view>
+</template>
 
 <style>
 body {
@@ -78,3 +57,20 @@ nav a.router-link-exact-active {
   color: #2320b9;
 }
 </style>
+
+
+<script>
+import store from "@/store";
+export default {
+  computed:{
+    store(){
+      return store
+    },
+  },
+  methods: {
+    logout() {
+      store.commit("logout");
+    },
+  },
+}
+</script>
